@@ -23,7 +23,7 @@ int GetDirectoryContent(const char *path, char **dir_contents) {
 }
 
 void DrawContents(WINDOW *win, char **dir_contents, int count_for_first_window,
-                   int current_index) {
+                  int current_index) {
   werase(win);
   for (int i = 0; i < count_for_first_window; i++) {
     if (i == current_index) {
@@ -42,7 +42,8 @@ int main() {
   char current_path[MAX_PATH_LENGTH];
   char **dir_contents = NULL;
   char **dir_contents_for_second_window = NULL;
-  int count_for_first_window, current_index, ch, windows_flag, count_for_second_window, count_tmp;
+  int count_for_first_window, current_index, ch, windows_flag,
+      count_for_second_window, count_tmp;
   initscr();
   int rows, cols;
   getmaxyx(stdscr, rows, cols);
@@ -58,21 +59,25 @@ int main() {
   }
   dir_contents_for_second_window = (char **)malloc(sizeof(char *) * rows);
   for (int i = 0; i < rows; i++) {
-    dir_contents_for_second_window[i] = (char *)malloc(sizeof(char) * MAX_NAME_LENGTH);
+    dir_contents_for_second_window[i] =
+        (char *)malloc(sizeof(char) * MAX_NAME_LENGTH);
   }
   strcpy(current_path, ".");
   count_for_first_window = GetDirectoryContent(current_path, dir_contents);
-  count_for_second_window = GetDirectoryContent(current_path, dir_contents_for_second_window);
+  count_for_second_window =
+      GetDirectoryContent(current_path, dir_contents_for_second_window);
   current_index = 0;
   windows_flag = 1;
   while (1) {
     if (windows_flag) {
       count_tmp = count_for_first_window;
-      DrawContents(first_window, dir_contents, count_for_first_window, current_index);
+      DrawContents(first_window, dir_contents, count_for_first_window,
+                   current_index);
       ch = wgetch(first_window);
     } else {
       count_tmp = count_for_second_window;
-      DrawContents(second_window, dir_contents_for_second_window, count_for_second_window, current_index);
+      DrawContents(second_window, dir_contents_for_second_window,
+                   count_for_second_window, current_index);
       ch = wgetch(second_window);
     }
     if (ch == KEY_UP) {
@@ -85,33 +90,32 @@ int main() {
       if (current_index >= count_tmp) {
         current_index = 0;
       }
-    }
-    else if (ch == '\t') {
+    } else if (ch == '\t') {
       if (windows_flag) {
         if (dir_contents[current_index][0] != '.') {
           strcpy(current_path, dir_contents[current_index]);
-          count_for_first_window = GetDirectoryContent(current_path, dir_contents);
+          count_for_first_window =
+              GetDirectoryContent(current_path, dir_contents);
           current_index = 0;
         }
       } else {
         if (dir_contents_for_second_window[current_index][0] != '.') {
           strcpy(current_path, dir_contents_for_second_window[current_index]);
-          count_for_second_window = GetDirectoryContent(current_path, dir_contents_for_second_window);
+          count_for_second_window =
+              GetDirectoryContent(current_path, dir_contents_for_second_window);
           current_index = 0;
         }
       }
-    }
-    else if (ch == 27) {
+    } else if (ch == 27) {
       break;
-    }
-    else if (ch == KEY_F(1)) {
+    } else if (ch == KEY_F(1)) {
       windows_flag = !windows_flag;
     }
   }
   for (int i = 0; i < rows; i++) {
     free(dir_contents[i]);
   }
-  for(int i = 0; i < rows; i++){
+  for (int i = 0; i < rows; i++) {
     free(dir_contents_for_second_window[i]);
   }
   free(dir_contents);

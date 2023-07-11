@@ -7,24 +7,24 @@ int main() {
   int changed_number = 3;
   unsigned char value_of_changed_number = 54;
   printf("\nbyte value of a number:\n");
-  for(int i = 0; i < sizeof(int); i++){
-    printf("%d byte of number = %d\n", i+1, *ptr);
+  for (int i = 0; i < sizeof(int); i++) {
+    printf("%d byte of number = %d\n", i + 1, *ptr);
     ptr++;
   }
-  ptr= NULL;
+  ptr = NULL;
   ptr = &number;
-  for(int i = 0; i < sizeof(int); i++){
-    if(i == changed_number-1){
+  for (int i = 0; i < sizeof(int); i++) {
+    if (i == changed_number - 1) {
       *ptr = value_of_changed_number;
       printf("\nnew 3 byte of number = %d\n", *ptr);
     }
     ptr++;
   }
-  ptr= NULL;
+  ptr = NULL;
   ptr = &number;
   printf("\nnew byte value of a number:\n");
-  for(int i = 0; i < sizeof(int); i++){
-    printf("%d byte of number = %d\n", i+1, *ptr);
+  for (int i = 0; i < sizeof(int); i++) {
+    printf("%d byte of number = %d\n", i + 1, *ptr);
     ptr++;
   }
   return 0;

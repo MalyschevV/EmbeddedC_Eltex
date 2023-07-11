@@ -17,13 +17,11 @@ int ReversedArray(int *array, int size) {
     printf("%3d ", array[i]);
   }
   printf("\n");
-
   for (int i = 0; i < size / 2; i++) {
     int tmp = array[i];
     array[i] = array[size - 1 - i];
     array[size - 1 - i] = tmp;
   }
-
   for (int i = 0; i < size; i++) {
     printf("%3d ", array[i]);
   }
@@ -79,7 +77,6 @@ int main() {
   int *array = NULL;
   printf("enter a size for arrays and matrixes\n");
   scanf("%d", &size);
-
   matrix = (int **)malloc(size * sizeof(int *));
   matrix[0] = (int *)malloc(size * size * sizeof(int));
   for (int i = 1; i < size; i++) {
@@ -96,7 +93,6 @@ int main() {
   free(matrix[0]);
   free(matrix);
   matrix = NULL;
-
   array = (int *)malloc(size * sizeof(int));
   if (NULL != array) {
     printf("\nReversed array:\n\n");
@@ -104,6 +100,5 @@ int main() {
   }
   free(array);
   array = NULL;
-
   return 0;
 }

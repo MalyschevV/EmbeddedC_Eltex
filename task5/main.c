@@ -28,8 +28,9 @@ void PluginLoader(const char *path, const char *name) {
 int main() {
   int quantity = 0;
   int choice = 0;
-  printf("Welcome to dynamic calculator!\nPlease enter the quantity of "
-         "arithmetic operations\n");
+  printf(
+      "Welcome to dynamic calculator!\nPlease enter the quantity of "
+      "arithmetic operations\n");
   scanf("%d", &quantity);
   if (quantity > 4) {
     printf("Error: too many arifmetic operators!");

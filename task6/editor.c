@@ -94,21 +94,21 @@ int main() {
     refresh();
     scanw("%d", &choice);
     switch (choice) {
-    case 1:
-      ViewFile(file_name);
-      break;
-    case 2:
-      EditFile(file_name);
-      break;
-    case 3:
-      SaveFile(file_name);
-      break;
-    case 4:
-      endwin();
-      return 0;
-    default:
-      printw("Error choice\n");
-      break;
+      case 1:
+        ViewFile(file_name);
+        break;
+      case 2:
+        EditFile(file_name);
+        break;
+      case 3:
+        SaveFile(file_name);
+        break;
+      case 4:
+        endwin();
+        return 0;
+      default:
+        printw("Error choice\n");
+        break;
     }
   }
 }
