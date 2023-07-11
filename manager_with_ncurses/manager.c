@@ -38,7 +38,7 @@ void DrawContents(WINDOW *win, char **dir_contents, int count_for_first_window,
 }
 
 int main() {
-  WINDOW *first_window, *second_window;
+  WINDOW *first_window, *second_window, *third_window;
   char current_path[MAX_PATH_LENGTH];
   char **dir_contents = NULL;
   char **dir_contents_for_second_window = NULL;
@@ -47,8 +47,13 @@ int main() {
   initscr();
   int rows, cols;
   getmaxyx(stdscr, rows, cols);
-  first_window = newwin(rows, cols / 2, 0, 0);
-  second_window = newwin(rows, cols / 2, 0, cols / 2);
+  first_window = newwin(rows - 2, cols / 2, 0, 0);
+  second_window = newwin(rows - 2, cols / 2, 0, cols / 2);
+  third_window = newwin(rows, cols, rows - 2, 0);
+  mvwprintw(third_window, 0, 0,
+            "Press F1 - switch directory\t\tPress Tab - open directory\nUP, "
+            "DOWN - navigate\t\t\tEsc - exit\n");
+  wrefresh(third_window);
   keypad(first_window, TRUE);
   keypad(second_window, TRUE);
   scrollok(first_window, TRUE);
@@ -122,6 +127,7 @@ int main() {
   free(dir_contents_for_second_window);
   delwin(first_window);
   delwin(second_window);
+  delwin(third_window);
   endwin();
   return 0;
 }
