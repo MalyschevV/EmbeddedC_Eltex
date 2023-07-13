@@ -12,10 +12,10 @@ ADD = addition.c
 SUB = substraction.c
 MUL = multiplication.c
 DIV = division.c
-ADDLIB = addition.so
-SUBLIB = substraction.so
-DIVLIB = division.so
-MULLIB = multiplication.so
+ADDLIB = libaddition.so
+SUBLIB = libsubstraction.so
+DIVLIB = libdivision.so
+MULLIB = libmultiplication.so
 LIBS = $(ADDLIB) $(MULLIB) $(DIVLIB) $(SUBLIB)
 
 all: $(TARGET)
