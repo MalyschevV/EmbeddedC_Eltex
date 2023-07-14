@@ -10,14 +10,17 @@ int GetDirectoryContent(const char *path, char **dir_contents) {
   DIR *dir;
   struct dirent *entry;
   int count_for_first_window = 0;
+
   dir = opendir(path);
   if (dir == NULL) {
     return -1;
   }
+
   while ((entry = readdir(dir)) != NULL) {
     strcpy(dir_contents[count_for_first_window], entry->d_name);
     count_for_first_window++;
   }
+
   closedir(dir);
   return count_for_first_window;
 }
@@ -25,15 +28,18 @@ int GetDirectoryContent(const char *path, char **dir_contents) {
 void DrawContents(WINDOW *win, char **dir_contents, int count_for_first_window,
                   int current_index) {
   werase(win);
+
   for (int i = 0; i < count_for_first_window; i++) {
     if (i == current_index) {
       wattron(win, A_REVERSE);
     }
+    
     mvwprintw(win, i, 0, "%s", dir_contents[i]);
     if (i == current_index) {
       wattroff(win, A_REVERSE);
     }
   }
+
   wrefresh(win);
 }
 
@@ -58,21 +64,26 @@ int main() {
   keypad(second_window, TRUE);
   scrollok(first_window, TRUE);
   scrollok(second_window, TRUE);
+
   dir_contents = (char **)malloc(sizeof(char *) * rows);
   for (int i = 0; i < rows; i++) {
     dir_contents[i] = (char *)malloc(sizeof(char) * MAX_NAME_LENGTH);
   }
+
   dir_contents_for_second_window = (char **)malloc(sizeof(char *) * rows);
   for (int i = 0; i < rows; i++) {
     dir_contents_for_second_window[i] =
         (char *)malloc(sizeof(char) * MAX_NAME_LENGTH);
   }
+
   strcpy(current_path, ".");
   count_for_first_window = GetDirectoryContent(current_path, dir_contents);
   count_for_second_window =
       GetDirectoryContent(current_path, dir_contents_for_second_window);
+
   current_index = 0;
   windows_flag = 1;
+
   while (1) {
     if (windows_flag) {
       count_tmp = count_for_first_window;
@@ -85,6 +96,7 @@ int main() {
                    count_for_second_window, current_index);
       ch = wgetch(second_window);
     }
+
     if (ch == KEY_UP) {
       current_index--;
       if (current_index < 0) {
@@ -117,17 +129,21 @@ int main() {
       windows_flag = !windows_flag;
     }
   }
+
   for (int i = 0; i < rows; i++) {
     free(dir_contents[i]);
   }
+
   for (int i = 0; i < rows; i++) {
     free(dir_contents_for_second_window[i]);
   }
+
   free(dir_contents);
   free(dir_contents_for_second_window);
   delwin(first_window);
   delwin(second_window);
   delwin(third_window);
   endwin();
+  
   return 0;
 }

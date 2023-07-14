@@ -2,15 +2,17 @@
 
 int main() {
   int number = 270533154;
-  char *ptr = NULL;
+  char* ptr = NULL;
   ptr = &number;
   int changed_number = 3;
   unsigned char value_of_changed_number = 54;
+
   printf("\nbyte value of a number:\n");
   for (int i = 0; i < sizeof(int); i++) {
     printf("%d byte of number = %d\n", i + 1, *ptr);
     ptr++;
   }
+
   ptr = NULL;
   ptr = &number;
   for (int i = 0; i < sizeof(int); i++) {
@@ -20,6 +22,7 @@ int main() {
     }
     ptr++;
   }
+
   ptr = NULL;
   ptr = &number;
   printf("\nnew byte value of a number:\n");
@@ -27,5 +30,6 @@ int main() {
     printf("%d byte of number = %d\n", i + 1, *ptr);
     ptr++;
   }
+
   return 0;
 }

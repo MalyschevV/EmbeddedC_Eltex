@@ -23,6 +23,7 @@ List *CreateNewRecord(Phonebook *phonebook) {
   list->prev = NULL;
   return list;
 }
+
 void InsertRecord(List *list) {
   if (head == NULL) {
     head = list;
@@ -39,6 +40,7 @@ void InsertRecord(List *list) {
 
 void SearchRecordByNumber(long key) {
   List *tmp = head;
+
   if (head->data->number == key) {
     printf("\nFound record!\n\n");
     printf("number:%ld\n", head->data->number);
@@ -46,6 +48,7 @@ void SearchRecordByNumber(long key) {
     printf("surname:%s\n", head->data->surname);
     return;
   }
+
   while (tmp->next != NULL) {
     tmp = tmp->next;
     if (tmp->data->number == key) {
@@ -56,6 +59,7 @@ void SearchRecordByNumber(long key) {
       return;
     }
   }
+
   printf("\nWrong Record!\n");
   return;
 }
@@ -65,22 +69,29 @@ void DeleteRecord(int position) {
     printf("\nError!Such a record does not exist!\n\n");
     return;
   }
+
   List *tmp = head;
+
   for (int i = 0; tmp != NULL && i < position; i++) {
     tmp = tmp->next;
   }
+
   if (tmp == NULL) {
     return;
   }
+
   if (head == tmp) {
     head = tmp->next;
   }
+
   if (tmp->next != NULL) {
     tmp->next->prev = tmp->prev;
   }
+
   if (tmp->prev != NULL) {
     tmp->prev->next = tmp->next;
   }
+
   printf("\nRecord successfully deleted!\n\n");
   free(tmp);
 }
@@ -88,10 +99,12 @@ void DeleteRecord(int position) {
 void ShowAllRecords() {
   int number = 0;
   List *tmp = head;
+
   if (!tmp) {
     printf("\nList is empty!\n\n");
     return;
   }
+
   while (tmp != NULL) {
     printf("\n");
     printf("record:%d\n", number = number + 1);
@@ -108,16 +121,20 @@ int main() {
   int position = 0;
   long key = 0;
   Phonebook phonebook;
+  
   while (1) {
     printf(
         "press 1 to show entire phonebook.\npress 2 to add to phonebook."
         "\npress 3 to search in phonebook.\npress 4 to delete in "
         "phonebook.\npress 5 to exit.\n");
     scanf("%d", &choice);
+    
     switch (choice) {
+
       case 1:
         ShowAllRecords();
         break;
+      
       case 2:
         printf("\n");
         printf("Enter a number:");
@@ -129,19 +146,23 @@ int main() {
         printf("\n");
         InsertRecord(CreateNewRecord(&phonebook));
         break;
+      
       case 3:
         printf("\n");
         printf("Enter a number for search:");
         scanf("%ld", &key);
         SearchRecordByNumber(key);
+      
       case 4:
         printf("\n");
         printf("Enter a position for delete:");
         scanf("%d", &position);
         DeleteRecord(position - 1);
         break;
+      
       case 5:
         return 0;
+      
       default:
         break;
     }

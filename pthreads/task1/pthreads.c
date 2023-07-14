@@ -5,7 +5,6 @@
 void *ThreadCalc(void *args) {
   int *ptr = (int *)args;
   printf("%d\n", *ptr);
-  return NULL;
 }
 
 int main() {

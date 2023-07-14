@@ -3,13 +3,15 @@
 #define SIZE 127
 
 void PluginLoader(const char *path, const char *name) {
-  void *handler = dlopen(path, RTLD_NOW);
   int first_number, second_number, result = 0;
+  int (*function)(int first_number, int second_number);
+  
+  void *handler = dlopen(path, RTLD_NOW);
   if (handler == NULL) {
     fprintf(stderr, "dlopen() error: %s\n", dlerror());
     return;
   }
-  int (*function)(int first_number, int second_number);
+
   function = dlsym(handler, name);
   if (function == NULL) {
     fprintf(stderr, "dlsym() error: %s\n", dlerror());
@@ -22,12 +24,14 @@ void PluginLoader(const char *path, const char *name) {
     result = function(first_number, second_number);
     printf("Result = %d\n", result);
   }
+
   dlclose(handler);
 }
 
 int main() {
   int quantity = 0;
   int choice = 0;
+
   printf(
       "Welcome to dynamic calculator!\nPlease enter the quantity of "
       "arithmetic operations\n");
@@ -39,14 +43,18 @@ int main() {
     printf("Error: too few arifmetic operators!");
     return -1;
   }
+
   char path[quantity][SIZE];
   char func_name[quantity][SIZE];
+
   printf(
       "Select operations to form menu in the format --> ./{name of library}.so "
       "{name of function}.\nExample for addition: ./libaddition.so addition\n");
+      
   for (int i = 0; i < quantity; i++) {
     scanf("%s%s", path[i], func_name[i]);
   }
+
   while (1) {
     for (int i = 0; i <= quantity; i++) {
       if (i == quantity) {
@@ -61,5 +69,6 @@ int main() {
     }
     PluginLoader(path[choice - 1], func_name[choice - 1]);
   }
+
   return 0;
 }

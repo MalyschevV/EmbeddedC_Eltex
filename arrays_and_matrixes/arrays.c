@@ -17,14 +17,17 @@ int ReversedArray(int *array, int size) {
     printf("%3d ", array[i]);
   }
   printf("\n");
+
   for (int i = 0; i < size / 2; i++) {
     int tmp = array[i];
     array[i] = array[size - 1 - i];
     array[size - 1 - i] = tmp;
   }
+
   for (int i = 0; i < size; i++) {
     printf("%3d ", array[i]);
   }
+
   return 0;
 }
 
@@ -42,6 +45,7 @@ int MatrixDiagonals(int **matrix, int size) {
     }
     printf("\n");
   }
+
   return 0;
 }
 
@@ -62,12 +66,14 @@ int SpiralMatrix(int **matrix, int size) {
       matrix[j][i - 1] = counter++;
     }
   }
+
   for (int i = 0; i < size; i++) {
     for (int j = 0; j < size; j++) {
       printf("%3d ", matrix[i][j]);
     }
     printf("\n");
   }
+
   return 0;
 }
 
@@ -75,13 +81,16 @@ int main() {
   int size = 0;
   int **matrix = NULL;
   int *array = NULL;
+
   printf("enter a size for arrays and matrixes\n");
   scanf("%d", &size);
   matrix = (int **)malloc(size * sizeof(int *));
   matrix[0] = (int *)malloc(size * size * sizeof(int));
+
   for (int i = 1; i < size; i++) {
     matrix[i] = matrix[0] + i * size;
   }
+
   if (NULL != matrix) {
     printf("\nOrdered matrix:\n\n");
     PrintOrderedMatrix(matrix, size);
@@ -90,15 +99,19 @@ int main() {
     printf("\nSpiral matrix:\n\n");
     SpiralMatrix(matrix, size);
   }
+
   free(matrix[0]);
   free(matrix);
   matrix = NULL;
   array = (int *)malloc(size * sizeof(int));
+
   if (NULL != array) {
     printf("\nReversed array:\n\n");
     ReversedArray(array, size);
   }
+
   free(array);
   array = NULL;
+  
   return 0;
 }
