@@ -84,13 +84,12 @@ int main() {
 
   printf("enter a size for arrays and matrixes\n");
   scanf("%d", &size);
+
   matrix = (int **)malloc(size * sizeof(int *));
   matrix[0] = (int *)malloc(size * size * sizeof(int));
-
   for (int i = 1; i < size; i++) {
     matrix[i] = matrix[0] + i * size;
   }
-
   if (NULL != matrix) {
     printf("\nOrdered matrix:\n\n");
     PrintOrderedMatrix(matrix, size);
@@ -103,8 +102,8 @@ int main() {
   free(matrix[0]);
   free(matrix);
   matrix = NULL;
+  
   array = (int *)malloc(size * sizeof(int));
-
   if (NULL != array) {
     printf("\nReversed array:\n\n");
     ReversedArray(array, size);
@@ -112,6 +111,6 @@ int main() {
 
   free(array);
   array = NULL;
-  
+
   return 0;
 }
