@@ -14,7 +14,6 @@ int main() {
   char first_buffer[SIZE];
   char second_buffer[SIZE];
   
-
   pipe(first_fd);
   pipe(second_fd);
 
