@@ -16,12 +16,13 @@ ADDLIB = libaddition.so
 SUBLIB = libsubstraction.so
 DIVLIB = libdivision.so
 MULLIB = libmultiplication.so
+SOURCE_FOR_HEADER = plugin.c
 LIBS = $(ADDLIB) $(MULLIB) $(DIVLIB) $(SUBLIB)
 
 all: $(TARGET)
 
 $(TARGET): $(LIBS)
-	$(CC) $(CFLAGS) $(SOURCE) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SOURCE) $(SOURCE_FOR_HEADER) -o $(TARGET)
 
 $(ADDLIB): $(ADDMODULE)
 	$(CC) $(LFLAGS) -o $(ADDLIB) $(ADDMODULE)
