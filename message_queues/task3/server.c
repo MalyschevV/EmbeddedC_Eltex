@@ -18,6 +18,8 @@ int main() {
   struct message msg_for_other;
   struct message msg;
   struct msqid_ds buf;
+  int count_of_clients = 0;
+  int num_of_client[MAX_CLIENTS] = {0};
 
   key = ftok("client", 555);
 
@@ -43,13 +45,26 @@ int main() {
       return 1;
     }
 
-    printf("%s", msg.mtext);
+    if (strcmp(msg.mtext, "New client connected\n") == 0) {
+      count_of_clients++;
+      if (msgctl(msqid, IPC_STAT, &buf) == -1) {
+        perror("msgctl");
+        return 1;
+      }
+      printf("Current quantity of clients: %ld\n",
+             buf.msg_qnum + count_of_clients);
+    }
+
+    printf("Client: %s", msg.mtext);
+
     strcpy(msg_for_other.mtext, msg.mtext);
 
-    if (msgsnd(msqid_for_other, &msg_for_other, sizeof(msg_for_other.mtext),
-               0) == -1) {
-      perror("msgsnd server");
-      return 1;
+    for (int i = 0; i < buf.msg_qnum + count_of_clients; i++) {
+      if (msgsnd(msqid_for_other, &msg_for_other, sizeof(msg_for_other.mtext),
+                 0) == -1) {
+        perror("msgsnd server");
+        return 1;
+      }
     }
   }
 

@@ -14,6 +14,42 @@ struct message {
   char mtext[SIZE];
 };
 
+void *SendMessage() {
+  char buffer[SIZE];
+  key_t key;
+  int msqid;
+  struct message msg;
+
+  key = ftok("client", 555);
+
+  msqid = msgget(key, 0666);
+  if (msqid == -1) {
+    printf("queue create\n");
+    return NULL;
+  }
+
+  strcpy(msg.mtext, "New client connected\n");
+  msg.mtype = 1;
+
+  if (msgsnd(msqid, &msg, sizeof(msg), 0) == -1) {
+    perror("msgsnd\n");
+    return NULL;
+  }
+
+  while (1) {
+    fgets(buffer, sizeof(buffer), stdin);
+    strcpy(msg.mtext, buffer);
+
+    msg.mtype = 1;
+
+    if (msgsnd(msqid, &msg, sizeof(msg), 0) == -1) {
+      perror("msgsnd\n");
+      return NULL;
+    }
+  }
+  return NULL;
+}
+
 void *RecieveMessage() {
   key_t key_for_other;
   int msqid_for_other;
@@ -36,34 +72,6 @@ void *RecieveMessage() {
 
     printf("%s", msg_for_other.mtext);
   }
-}
-
-void *SendMessage() {
-  char buffer[SIZE];
-  key_t key;
-  int msqid;
-  struct message msg;
-
-  key = ftok("client", 555);
-
-  msqid = msgget(key, 0666);
-  if (msqid == -1) {
-    printf("queue create\n");
-    return NULL;
-  }
-
-  while (1) {
-    fgets(buffer, sizeof(buffer), stdin);
-    strcpy(msg.mtext, buffer);
-
-    msg.mtype = 1;
-
-    if (msgsnd(msqid, &msg, sizeof(msg), 0) == -1) {
-      perror("msgsnd\n");
-      return NULL;
-    }
-  }
-  return NULL;
 }
 
 int main() {
