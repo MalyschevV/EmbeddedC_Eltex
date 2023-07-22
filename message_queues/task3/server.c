@@ -55,10 +55,12 @@ int main() {
              buf.msg_qnum + count_of_clients);
     }
 
-    printf("Client: %s", msg.mtext);
+    printf("%s", msg.mtext);
 
     strcpy(msg_for_other.mtext, msg.mtext);
 
+    // TO DO отправляет сообщения всем и себе в том числе, соответсвенно, у
+    // отправителя дублирование сообщения
     for (int i = 0; i < buf.msg_qnum + count_of_clients; i++) {
       if (msgsnd(msqid_for_other, &msg_for_other, sizeof(msg_for_other.mtext),
                  0) == -1) {

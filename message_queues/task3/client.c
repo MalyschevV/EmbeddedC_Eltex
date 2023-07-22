@@ -87,14 +87,11 @@ int main() {
     return 1;
   }
 
-  if (pthread_join(client_thread[0], NULL) != 0) {
-    printf("Failed to join recieve thread\n");
-    return 1;
-  }
-
-  if (pthread_join(client_thread[1], NULL) != 0) {
-    printf("Failed to join send thread\n");
-    return 1;
+  for (int i = 0; i < NUM_OF_THREADS; i++) {
+    if (pthread_join(client_thread[i], NULL) != 0) {
+      printf("Failed to join thread\n");
+      return 1;
+    }
   }
 
   return 0;
