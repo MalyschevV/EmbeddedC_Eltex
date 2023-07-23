@@ -10,6 +10,7 @@
 struct message {
   long mtype;
   char mtext[SIZE];
+  int client_id;
 };
 
 int main() {
@@ -18,8 +19,7 @@ int main() {
   struct message msg_for_other;
   struct message msg;
   struct msqid_ds buf;
-  int count_of_clients = 0;
-  int num_of_client[MAX_CLIENTS] = {0};
+  int num_of_clients = 0;
 
   key = ftok("client", 555);
 
@@ -46,24 +46,22 @@ int main() {
     }
 
     if (strcmp(msg.mtext, "New client connected\n") == 0) {
-      count_of_clients++;
+      num_of_clients++;
       if (msgctl(msqid, IPC_STAT, &buf) == -1) {
         perror("msgctl");
         return 1;
       }
-      printf("Current quantity of clients: %ld\n",
-             buf.msg_qnum + count_of_clients);
+      printf("current quantity clients: %d\n", num_of_clients);
     }
 
     printf("%s", msg.mtext);
-
     strcpy(msg_for_other.mtext, msg.mtext);
 
-    // TO DO отправляет сообщения всем и себе в том числе, соответсвенно, у
-    // отправителя дублирование сообщения
-    for (int i = 0; i < buf.msg_qnum + count_of_clients; i++) {
-      if (msgsnd(msqid_for_other, &msg_for_other, sizeof(msg_for_other.mtext),
-                 0) == -1) {
+    msg_for_other.client_id = msg.client_id;
+    
+    for (int i = 0; i < num_of_clients; i++) {
+      if (msgsnd(msqid_for_other, &msg_for_other, sizeof(msg_for_other), 0) ==
+          -1) {
         perror("msgsnd server");
         return 1;
       }
