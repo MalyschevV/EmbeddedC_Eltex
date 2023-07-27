@@ -55,6 +55,7 @@ void *handler(void *socket) {
 
 int main() {
   pthread_t server_thread;
+  pthread_attr_t attr;
   struct sockaddr_in addr;
 
   int sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -81,6 +82,9 @@ int main() {
     exit(1);
   }
 
+  pthread_attr_init(&attr);
+  pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
   while (1) {
     int client_fd = accept(sock, 0, 0);
 
@@ -89,16 +93,11 @@ int main() {
       exit(1);
     }
 
-    if (pthread_create(&server_thread, NULL, (void *)handler, (void *)&client_fd) <
-        0) {
+    if (pthread_create(&server_thread, &attr, (void *)handler,
+                       (void *)&client_fd) < 0) {
       perror("Pthread creating failed");
       exit(1);
     }
-  }
-
-  if (pthread_join(server_thread, NULL) != 0) {
-    perror("Failed to join thread");
-    exit(1);
   }
 
   close(sock);
