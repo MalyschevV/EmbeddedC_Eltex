@@ -1,0 +1,33 @@
+CC = gcc
+TARGET_SERVER = server
+SOURCE_SERVER = server.c
+TARGET_TCP_CLIENT = tcp_client
+SOURCE_TCP_CLIENT = tcp_client.c
+TARGET_UDP_CLIENT = udp_client
+SOURCE_UDP_CLIENT = udp_client.c
+
+all: $(TARGET_SERVER) $(TARGET_TCP_CLIENT) $(TARGET_UDP_CLIENT)
+
+
+$(TARGET_SERVER): 
+	$(CC) $(SOURCE_SERVER) -o $(TARGET_SERVER)
+
+$(TARGET_TCP_CLIENT):
+	$(CC) $(SOURCE_TCP_CLIENT) -o $(TARGET_TCP_CLIENT)
+
+$(TARGET_UDP_CLIENT):
+	$(CC) $(SOURCE_UDP_CLIENT) -o $(TARGET_UDP_CLIENT)
+
+runserver:
+	./$(TARGET_SERVER)
+
+format:
+	clang-format -style=Google -i $(SOURCE_SERVER) $(SOURCE_UDP_CLIENT) $(SOURCE_TCP_CLIENT)
+
+clean:
+	rm -rf *.o $(TARGET_SERVER) $(TARGET_UDP_CLIENT) $(TARGET_TCP_CLIENT)
+
+
+
+	
+
