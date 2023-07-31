@@ -38,6 +38,7 @@ void *handler(void *socket) {
              thread_server_id);
 
       char *time = getTime();
+      char message_from_server[SIZE] = "Hello client! Current time :";
       strcpy(current_time, time);
       strcat(message_from_server, current_time);
 
@@ -45,6 +46,8 @@ void *handler(void *socket) {
         perror("error send to server");
         exit(1);
       }
+      memset(message_from_server, 0, sizeof(message_from_server));
+      memset(current_time, 0, sizeof(current_time));
     }
   }
 

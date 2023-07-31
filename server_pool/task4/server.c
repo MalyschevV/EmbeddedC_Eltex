@@ -24,7 +24,6 @@ int main(void) {
   struct sockaddr_in arr_address[FD_SETSIZE];
   fd_set readfds, fdlist;
   char current_time[SIZE];
-  char message_from_server[SIZE] = "Hello client! Current time :";
 
   if ((tcp_server_socket = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
     perror("Error creating TCP socket");
@@ -96,12 +95,19 @@ int main(void) {
                inet_ntoa(client_address.sin_addr),
                ntohs(client_address.sin_port), buffer);
 
+        char message_from_server[SIZE] = "Hello client! Current time :";
         char *time = getTime();
         strcpy(current_time, time);
         strcat(message_from_server, current_time);
 
-        sendto(udp_server_socket, message_from_server, SIZE, 0,
-               (struct sockaddr *)&client_address, sizeof(client_address));
+        if (sendto(udp_server_socket, message_from_server, SIZE, 0,
+                   (struct sockaddr *)&client_address,
+                   sizeof(client_address)) < 0) {
+          perror("error sendto");
+          exit(1);
+        }
+        memset(message_from_server, 0, sizeof(message_from_server));
+        memset(current_time, 0, sizeof(current_time));
       }
     }
 
@@ -116,6 +122,7 @@ int main(void) {
                  inet_ntoa(client_address.sin_addr),
                  ntohs(client_address.sin_port), buffer);
 
+          char message_from_server[SIZE] = "Hello client! Current time :";
           char *time = getTime();
           strcpy(current_time, time);
           strcat(message_from_server, current_time);
@@ -124,6 +131,8 @@ int main(void) {
             perror("Error sending TCP response to client");
             exit(1);
           }
+          memset(message_from_server, 0, sizeof(message_from_server));
+          memset(current_time, 0, sizeof(current_time));
         } else {
           FD_CLR(fd, &fdlist);
 
