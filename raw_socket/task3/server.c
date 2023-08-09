@@ -54,7 +54,9 @@ int main() {
   printf("Client IP: %s\n", inet_ntoa(client.sin_addr));
   printf("Client PORT: %d\n", ntohs(client.sin_port));
   printf("Bytes: %d\n", message);
-  printf("Message: %s\n", packet);
+  printf("Message from client: %s\n", packet);
+
+  packet[0] = 'N';
 
   while (1) {
     message = sendto(sock, packet, strlen(packet) * sizeof(char), 0,

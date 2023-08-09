@@ -72,7 +72,7 @@ int main() {
       printf("Destination PORT: %d\n", ntohs(udp_header->dest));
       printf("lenght: %d\n", ntohs(udp_header->len));
       printf("Received packet: %d\n", header);
-      printf("Message: %s\n",
+      printf("Modified message response: %s\n",
              packet + sizeof(struct iphdr) + sizeof(struct udphdr));
       break;
     }
