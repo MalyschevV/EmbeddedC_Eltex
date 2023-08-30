@@ -32,7 +32,7 @@ ssize_t test_write(struct file *fd, const char __user *buff, size_t size, loff_t
     return rc;
 }
 
-static struct file_operations fops {
+static struct file_operations fops = {
     .owner = THIS_MODULE,
     .read = test_read,
     .write = test_write
@@ -57,4 +57,4 @@ void cleanup_module(void){
 }
 
 MODULE_LICENSE("GPLv2");
-MODULE_DESCRIPTION("desc");
+
